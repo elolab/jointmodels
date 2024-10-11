@@ -10,6 +10,12 @@ results <- foreach(f=files, .combine=rbind) %do% {
   if(is.null(results.JM$AUC)) {results.JM$AUC <- c(NA,NA,NA)}
   if(is.null(results.Cox$AUC)) {results.Cox$AUC <- c(NA,NA,NA)}
   
+  if(is.null(results.joineRML$CI)) {results.joineRML$CI <- matrix(NA,3,3)}
+  if(is.null(results.lcmm$CI)) {results.lcmm$CI <- matrix(NA,3,3)}
+  if(is.null(results.pcCox$CI)) {results.pcCox$CI <- matrix(NA,3,3)}
+  if(is.null(results.JM$CI)) {results.JM$CI <- matrix(NA,3,3)}
+  if(is.null(results.Cox$CI)) {results.Cox$CI <- matrix(NA,3,3)}
+  
   if(is.null(results.joineRML$p)) {results.joineRML$p <- NA}
   if(is.null(results.lcmm$p)) {results.lcmm$p <- NA}
   if(is.null(results.pcCox$p)) {results.pcCox$p <- NA}
@@ -22,7 +28,10 @@ results <- foreach(f=files, .combine=rbind) %do% {
   if(is.null(results.JM$time)) {results.JM$time <- NA}
   if(is.null(results.Cox$time)) {results.Cox$time <- NA}
   
-  res <- data.frame(rbind(results.joineRML$AUC, results.lcmm$AUC, results.pcCox$AUC, results.JM$AUC, results.Cox$AUC))
+  auc <- data.frame(rbind(results.joineRML$AUC, results.lcmm$AUC, results.pcCox$AUC, results.JM$AUC, results.Cox$AUC))
+  ci.low <- data.frame(rbind(results.joineRML$CI[1,], results.lcmm$CI[1,], results.pcCox$CI[1,], results.JM$CI[1,], results.Cox$CI[1,]))
+  ci.high <- data.frame(rbind(results.joineRML$CI[3,], results.lcmm$CI[3,], results.pcCox$CI[3,], results.JM$CI[3,], results.Cox$CI[3,]))
+  res <- cbind(auc,ci.low,ci.high)
   res$p <- c(results.joineRML$p, results.lcmm$p, results.pcCox$p, results.JM$p, results.Cox$p)
   res$time <- c(results.joineRML$time, results.lcmm$time, results.pcCox$time, results.JM$time, results.Cox$time)
   res$method <- c("JoineRML","lcmm","pcCox","JM","Cox")
@@ -30,8 +39,10 @@ results <- foreach(f=files, .combine=rbind) %do% {
   res
 }
 results <- cbind(results, t(sapply(results$file, function(x) unlist(strsplit(x,"_|\\."))))[,2:4])
-colnames(results)[8:10] <- c("subj","trend","var")
+colnames(results)[14:16] <- c("subj","trend","var")
 colnames(results)[1:3] <- c("auc5","auc10","auc15")
+colnames(results)[4:6] <- c("auc5.ci.low","auc10.ci.low","auc15.ci.low")
+colnames(results)[7:9] <- c("auc5.ci.high","auc10.ci.high","auc15.ci.high")
 
 writexl::write_xlsx(results, path="../Results/Trend.xlsx")
 
