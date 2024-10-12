@@ -280,4 +280,3 @@ g <- "MGAT1"
 data.train <- cbind(data.meta, intensity=data[g,])
 plotProfile(data.train, individuals=TRUE, scale=FALSE, main=g)
 
-

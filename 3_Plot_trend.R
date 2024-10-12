@@ -217,5 +217,3 @@ colnames(wilcox) <- methods[1:4]
 rownames(wilcox) <- c("auc5","auc10","auc15")
 max(wilcox)
 
-
-

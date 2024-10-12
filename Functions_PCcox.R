@@ -7,7 +7,7 @@ library(partlyconditional)
 
 train.pcCox <- function(data.train) {
   set.seed(12345)
-  pc.cox <-  PC.Cox(id = "id", stime = "event_time", status = "status", measurement.time = "time", predictors =c("time", "intensity"), data = data.train)
+  pc.cox <- PC.Cox(id = "id", stime = "event_time", status = "status", measurement.time = "time", predictors =c("time", "intensity"), data = data.train)
   return(pc.cox)
 }
 
@@ -33,12 +33,12 @@ test.pcCox<- function(data.test, model.pcCox, landmark, horizon, max.time) {
   return(result)
 }
 
-pred.pcCox <-  function(model.pcCox, data.test, data.test.id, landmark, horizon, max.time) {
+pred.pcCox <- function(model.pcCox, data.test, data.test.id, landmark, horizon, max.time) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {
     test <- data.test[data.test[,"subject"]==data.test.id[i,"subject"],c("id","time","intensity")]
-    result[[i]]<- tryCatch(test.pcCox(test, model.pcCox, landmark, horizon, max.time), error=function(e) NA)
+    result[[i]] <- tryCatch(test.pcCox(test, model.pcCox, landmark, horizon, max.time), error=function(e) NA)
   }
-  names(result)<- data.test.id[,"subject"]
+  names(result) <- data.test.id[,"subject"]
   return(result)
 }

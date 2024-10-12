@@ -4,7 +4,7 @@ library(lcmm)
 # lcmm
 #--------------------------------------------------
 
-train.lcmm<- function(data.train) {
+train.lcmm <- function(data.train) {
   set.seed(12345)
   lcmm.m1 <- Jointlcmm(intensity ~ time,
                        random = ~ time,
@@ -35,7 +35,7 @@ train.lcmm.randint <- function(data.train) {
                                   random = ~ 1,
                                   survival = Surv(event_time, status) ~ 1, 
                                   hazard = "Weibull", subject = "id", data = data.train, ng = 2, verbose = FALSE))
-  lcmm.m<- lcmm.m1
+  lcmm.m <- lcmm.m1
   if(lcmm.m2$BIC < lcmm.m1$BIC) lcmm.m<- lcmm.m2
   return(lcmm.m)
 }
@@ -47,8 +47,8 @@ test.lcmm <- function(data.test, model.lcmm, landmark, horizon) {
   row.names(result) <- paste("landmark", landmark, sep=".")
   colnames(result) <- paste("eval", landmark[1] + horizon, sep=".")
   for(l in 1:length(landmark)) {
-    temp<- dynp.case$pred[dynp.case$pred[,"landmark"]==landmark[l],,drop=FALSE]
-    temp<- temp[temp[,"landmark"] + temp[,"horizon"] <= landmark[1] + max(horizon),,drop=FALSE]
+    temp <- dynp.case$pred[dynp.case$pred[,"landmark"]==landmark[l],,drop=FALSE]
+    temp <- temp[temp[,"landmark"] + temp[,"horizon"] <= landmark[1] + max(horizon),,drop=FALSE]
     result[l,] <- c(rep(NA,length(horizon)-nrow(temp)), temp[,"pred"])
   }
   return(result)

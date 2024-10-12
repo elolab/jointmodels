@@ -120,14 +120,3 @@ legend("center", legend=methods, col=colors, lty=1, lwd=2, bty="n")
 
 dev.off()
 
-
-
-
-
-breaks <- seq(0.5, 1, by=0.05)
-col <- colorRampPalette(c("grey", "gold", "darkred"))(length(breaks)-1)
-pheatmap::pheatmap(aucs[,3:5], scale="none", col=col, breaks=breaks, cluster_rows=FALSE, cluster_cols=FALSE)
-
-
-
-
