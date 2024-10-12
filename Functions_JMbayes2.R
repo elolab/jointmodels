@@ -4,6 +4,7 @@ library(JMbayes2)
 # JMbayes2
 #--------------------------------------------------
 
+# Train
 train.JMbayes2 <- function(data.train, data.train.id) {
   set.seed(12345)
   fitLME <- lme(intensity ~ time, random = ~ time | id, data = data.train)
@@ -12,6 +13,7 @@ train.JMbayes2 <- function(data.train, data.train.id) {
   return(fit.JMbayes2)
 }
 
+# Test
 test.JMbayes2 <- function(data.test, model.JMbayes2, landmark, horizon) {
   set.seed(12345)
   result<- matrix(nrow=length(landmark), ncol=length(horizon))
@@ -27,6 +29,7 @@ test.JMbayes2 <- function(data.test, model.JMbayes2, landmark, horizon) {
   return(result)
 }
 
+# Predict
 pred.JMbayes2 <- function(model.JMbayes2, data.test, data.test.id, landmark, horizon) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {

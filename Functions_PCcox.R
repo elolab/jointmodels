@@ -5,12 +5,14 @@ library(partlyconditional)
 # PCcox
 #--------------------------------------------------
 
+# Train
 train.pcCox <- function(data.train) {
   set.seed(12345)
   pc.cox <- PC.Cox(id = "id", stime = "event_time", status = "status", measurement.time = "time", predictors =c("time", "intensity"), data = data.train)
   return(pc.cox)
 }
 
+# Test
 test.pcCox<- function(data.test, model.pcCox, landmark, horizon, max.time) {
   set.seed(12345)
   
@@ -33,6 +35,7 @@ test.pcCox<- function(data.test, model.pcCox, landmark, horizon, max.time) {
   return(result)
 }
 
+# Predict
 pred.pcCox <- function(model.pcCox, data.test, data.test.id, landmark, horizon, max.time) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {

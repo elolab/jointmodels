@@ -5,12 +5,14 @@ library(survival)
 # Cox
 #--------------------------------------------------
 
+# Train
 train.Cox <- function(data.train) {
   set.seed(12345)
   model.cox <-  coxph(Surv(time, status) ~ intensity, data=data.train)
   return(model.cox)
 }
 
+# Test
 test.Cox <- function(data.test, model.Cox) {
   set.seed(12345)
   newd <- cbind(data.test, status=rep(0,nrow(data.test)))
@@ -19,6 +21,7 @@ test.Cox <- function(data.test, model.Cox) {
   return(result)
 }
 
+# Predict
 pred.Cox <-  function(model.Cox, data.test, data.test.id) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {
@@ -29,6 +32,7 @@ pred.Cox <-  function(model.Cox, data.test, data.test.id) {
   return(result)
 }
 
+# Subset data, utility function
 subsetData <- function(data, limit) {
   subset <- foreach(s=unique(data$subject), .combine=rbind) %do% {
     dat <- data[which(data$subject==s),]
@@ -37,7 +41,4 @@ subsetData <- function(data, limit) {
   }
   return(subset)
 }
-
-
-
 

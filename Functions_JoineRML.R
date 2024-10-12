@@ -4,6 +4,7 @@ library(joineRML)
 # JoineRML
 #--------------------------------------------------
 
+# Train
 train.joineRML<- function(data.train) {
   set.seed(12345)
   fit.joineRML <- mjoint(formLongFixed = list(intensity ~ time),
@@ -14,6 +15,7 @@ train.joineRML<- function(data.train) {
   return(fit.joineRML)
 }
 
+# Train with random intercept
 train.joineRML.randint <- function(data.train) {
   set.seed(12345)
   fit.joineRML <- mjoint(formLongFixed = list(intensity ~ time),
@@ -24,6 +26,7 @@ train.joineRML.randint <- function(data.train) {
   return(fit.joineRML)
 }
 
+# Test
 test.joineRML <- function(data.test, model.joineRML, landmark, horizon) {
   set.seed(12345)
   result <- matrix(nrow=length(landmark), ncol=length(horizon))
@@ -42,6 +45,7 @@ test.joineRML <- function(data.test, model.joineRML, landmark, horizon) {
   return(result)
 }
 
+# Predict
 pred.joineRML <- function(model.joineRML, data.test, data.test.id, landmark, horizon) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {

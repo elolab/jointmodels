@@ -4,6 +4,7 @@ library(lcmm)
 # lcmm
 #--------------------------------------------------
 
+# Train
 train.lcmm <- function(data.train) {
   set.seed(12345)
   lcmm.m1 <- Jointlcmm(intensity ~ time,
@@ -22,6 +23,7 @@ train.lcmm <- function(data.train) {
   return(lcmm.m)
 }
 
+# Train with random intercept
 train.lcmm.randint <- function(data.train) {
   set.seed(12345)
   lcmm.m1 <- Jointlcmm(intensity ~ time,
@@ -40,6 +42,7 @@ train.lcmm.randint <- function(data.train) {
   return(lcmm.m)
 }
 
+# Test
 test.lcmm <- function(data.test, model.lcmm, landmark, horizon) {
   set.seed(12345)
   dynp.case <- dynpred(model.lcmm, data.test, landmark = landmark, var.time = "time", horizon = horizon)
@@ -54,6 +57,7 @@ test.lcmm <- function(data.test, model.lcmm, landmark, horizon) {
   return(result)
 }
 
+# Predict
 pred.lcmm <-  function(model.lcmm, data.test, data.test.id, landmark, horizon) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {

@@ -4,6 +4,7 @@ library(JM)
 # JM
 #--------------------------------------------------
 
+# Train
 train.JM <- function(data.train, data.train.id) {
   set.seed(12345)
   fitLME <- lme(intensity ~ time, random = ~ time | id, data = data.train)
@@ -12,6 +13,7 @@ train.JM <- function(data.train, data.train.id) {
   return(fit.JM)
 }
 
+# Test
 test.JM <- function(data.test, model.JM, landmark, horizon) {
   set.seed(12345)
   result <- matrix(nrow=length(landmark), ncol=length(horizon))
@@ -27,6 +29,7 @@ test.JM <- function(data.test, model.JM, landmark, horizon) {
   return(result)
 }
 
+# Predict
 pred.JM <-  function(model.JM, data.test, data.test.id, landmark, horizon) {
   result <- list()
   for(i in 1:nrow(data.test.id)) {
