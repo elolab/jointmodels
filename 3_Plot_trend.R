@@ -63,12 +63,47 @@ for(type in 1:3) {
       abline(h=0.5, lty=2, col="black")
       for(m in methods) {
         if(type==1 | type==3) {
-          lines(5:1, results[which(results$method==m & results$var==var & results$subj=="subj10"),landmarks[l]], lwd=1, lty=2, col=colors[m])
-          points(5:1, results[which(results$method==m & results$var==var & results$subj=="subj10"),landmarks[l]], pch=19, col=colors[m])
+          y <- results[which(results$method==m & results$var==var & results$subj=="subj10"),landmarks[l]]
+          lines(5:1, y, lwd=1, lty=2, col=colors[m])
+          points(5:1, y, pch=19, col=colors[m])
         }
         if(type==1 | type==2) {
-          lines(5:1, results[which(results$method==m & results$var==var & results$subj=="subj50"),landmarks[l]], lwd=1, col=colors[m])
-          points(5:1, results[which(results$method==m & results$var==var & results$subj=="subj50"),landmarks[l]], pch=19, col=colors[m])
+          y <- results[which(results$method==m & results$var==var & results$subj=="subj50"),landmarks[l]]
+          lines(5:1, y, lwd=1, col=colors[m])
+          points(5:1, y, pch=19, col=colors[m])
+        }
+      }
+      mtext(paste("landmark =", names(landmarks)[l]))
+    }
+    frame()
+    legend("center", legend=methods, col=colors, lty=1, lwd=2, bty="n")
+  }
+}
+dev.off()
+
+pdf("../Results/Trend_CI.pdf", width=8, height=6)
+par(mfrow=c(3,4))
+for(type in 1:3) {
+  for(var in unique(results$var)) {
+    for (l in 1:length(landmarks)) {
+      plot(NULL, xlim=c(1,5), ylim=c(0.4,1), xlab="Difficulty", ylab="AUC", bty="n")
+      abline(h=0.5, lty=2, col="black")
+      for(m in methods) {
+        if(type==1 | type==3) {
+          y <- results[which(results$method==m & results$var==var & results$subj=="subj10"),landmarks[l]]
+          y.low <- results[which(results$method==m & results$var==var & results$subj=="subj10"),landmarks[l]+3]
+          y.high <- results[which(results$method==m & results$var==var & results$subj=="subj10"),landmarks[l]+6]
+          polygon(c(5:1, 1:5), c(y.low, rev(y.high)), col=adjustcolor(colors[m], alpha.f=0.2), border=NA)
+          lines(5:1, y, lwd=1, lty=2, col=colors[m])
+          points(5:1, y, pch=19, col=colors[m])
+        }
+        if(type==1 | type==2) {
+          y <- results[which(results$method==m & results$var==var & results$subj=="subj50"),landmarks[l]]
+          y.low <- results[which(results$method==m & results$var==var & results$subj=="subj50"),landmarks[l]+3]
+          y.high <- results[which(results$method==m & results$var==var & results$subj=="subj50"),landmarks[l]+6]
+          polygon(c(5:1, 1:5), c(y.low, rev(y.high)), col=adjustcolor(colors[m], alpha.f=0.2), border=NA)
+          lines(5:1, y, lwd=1, col=colors[m])
+          points(5:1, y, pch=19, col=colors[m])
         }
       }
       mtext(paste("landmark =", names(landmarks)[l]))
